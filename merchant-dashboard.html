@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Panel del Comercio</h1>
+    
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar -->
+        <div class="md:w-1/4">
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-16 h-16 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-2xl font-bold">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div>
+                        <h3 id="merchantName" class="font-bold">Mi Comercio</h3>
+                        <p id="merchantStatus" class="text-sm text-gray-600">Estado: <span class="text-green-500">Abierto</span></p>
+                    </div>
+                </div>
+                <nav class="space-y-2">
+                    <a href="#" class="block px-3 py-2 rounded-md bg-gray-100 text-[#FF6B35] font-medium">Resumen</a>
+                    <a href="#products" class="block px-3 py-2 rounded-md hover:bg-gray-100">Productos</a>
+                    <a href="#orders" class="block px-3 py-2 rounded-md hover:bg-gray-100">Pedidos</a>
+                    <a href="#analytics" class="block px-3 py-2 rounded-md hover:bg-gray-100">Analíticas</a>
+                    <a href="#settings" class="block px-3 py-2 rounded-md hover:bg-gray-100">Configuración</a>
+                    <button id="merchantLogout" class="w-full text-left block px-3 py-2 rounded-md hover:bg-gray-100 text-red-500">Cerrar Sesión</button>
+                </nav>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <h3 class="font-bold mb-2">Acciones Rápidas</h3>
+                <button id="toggleStatus" class="w-full mb-2 bg-[#FF6B35] text-white py-2 px-4 rounded-md hover:bg-[#E55B2B]">
+                    Cambiar Estado
+                </button>
+                <button id="addProductBtn" class="w-full mb-2 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">
+                    + Añadir Producto
+                </button>
+                <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+                    Ver Estadísticas
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="md:w-3/4">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-gray-500 text-sm font-medium">Ventas Hoy</h3>
+                    <p class="text-2xl font-bold">$<span id="todaySales">0</span></p>
+                    <p class="text-sm text-green-500">+0% vs ayer</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-gray-500 text-sm font-medium">Pedidos Hoy</h3>
+                    <p class="text-2xl font-bold"><span id="todayOrders">0</span></p>
+                    <p class="text-sm text-green-500">+0% vs ayer</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-gray-500 text-sm font-medium">Rating</h3>
+                    <div class="flex items-center">
+                        <div class="text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span id="merchantRating">4.5</span>
+                    </div>
+                    <p class="text-sm text-gray-500"><span id="totalReviews">12</span> reseñas</p>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6" id="orders">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Pedidos Recientes</h2>
+                    <a href="#" class="text-[#FF6B35] hover:underline">Ver todos</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedido #</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="merchantOrders" class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">Cargando pedidos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div class="bg-white rounded-lg shadow-md p-6" id="products">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Mis Productos</h2>
+                    <button id="addNewProduct" class="bg-[#FF6B35] text-white py-2 px-4 rounded-md hover:bg-[#E55B2B]">
+                        + Añadir Producto
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="productsGrid">
+                    <div class="text-center py-8 text-gray-500">Cargando productos...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Product Modal (hidden by default) -->
+<div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">Añadir Producto</h3>
+            <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form id="productForm" class="space-y-4">
+            <div>
+                <label for="productName" class="block text-sm font-medium text-gray-700">Nombre del Producto</label>
+                <input type="text" id="productName" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FF6B35] focus:border-[#FF6B35]">
+            </div>
+            <div>
+                <label for="productDescription" class="block text-sm font-medium text-gray-700">Descripción</label>
+                <textarea id="productDescription" rows="3"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FF6B35] focus:border-[#FF6B35]"></textarea>
+            </div>
+            <div>
+                <label for="productPrice" class="block text-sm font-medium text-gray-700">Precio ($)</label>
+                <input type="number" id="productPrice" min="0" step="0.01" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FF6B35] focus:border-[#FF6B35]">
+            </div>
+            <div>
+                <label for="productCategory" class="block text-sm font-medium text-gray-700">Categoría</label>
+                <select id="productCategory"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FF6B35] focus:border-[#FF6B35]">
+                    <option>Comida Rápida</option>
+                    <option>Bebidas</option>
+                    <option>Postres</option>
+                    <option>Especiales</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                    <div class="space-y-1 text-center">
+                        <div class="flex text-sm text-gray-600">
+                            <label for="productImage" class="relative cursor-pointer bg-white rounded-md font-medium text-[#FF6B35] hover:text-[#E55B2B] focus-within:outline-none">
+                                <span>Subir archivo</span>
+                                <input id="productImage" name="productImage" type="file" class="sr-only">
+                            </label>
+                            <p class="pl-1">o arrastrar aquí</p>
+                        </div>
+                        <p class="text-xs text-gray-500">PNG, JPG hasta 2MB</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="cancelProduct" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B35]">
+                    Cancelar
+                </button>
+                <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF6B35] hover:bg-[#E55B2B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6B35]">
+                    Guardar Producto
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Check merchant role on auth state change
+auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+        window.location.href = 'user-login.html';
+        return;
+    }
+
+    // Check if user is merchant
+    const userDoc = await db.collection('users').doc(user.uid).get();
+    if (!userDoc.exists || userDoc.data().role !== 'merchant') {
+        showAlert('Acceso denegado: solo para comercios', 'error');
+        setTimeout(() => window.location.href = 'index.html', 2000);
+        return;
+    }
+
+    // Load merchant data
+    const merchantDoc = await db.collection('merchants').doc(user.uid).get();
+    if (merchantDoc.exists) {
+        const merchantData = merchantDoc.data();
+        document.getElementById('merchantName').textContent = merchantData.businessName || 'Mi Comercio';
+        document.getElementById('merchantStatus').innerHTML = `Estado: <span class="${merchantData.isOpen ? 'text-green-500' : 'text-red-500'}">${merchantData.isOpen ? 'Abierto' : 'Cerrado'}</span>`;
+    }
+
+    // TODO: Load merchant orders, products, stats
+});
+
+// Modal handling
+document.getElementById('addProductBtn').addEventListener('click', () => {
+    document.getElementById('productModal').classList.remove('hidden');
+});
+document.getElementById('addNewProduct').addEventListener('click', () => {
+    document.getElementById('productModal').classList.remove('hidden');
+});
+document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('productModal').classList.add('hidden');
+});
+document.getElementById('cancelProduct').addEventListener('click', () => {
+    document.getElementById('productModal').classList.add('hidden');
+});
+
+// Toggle merchant status
+document.getElementById('toggleStatus').addEventListener('click', async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const merchantRef = db.collection('merchants').doc(user.uid);
+    const doc = await merchantRef.get();
+    
+    if (doc.exists) {
+        const currentStatus = doc.data().isOpen || false;
+        await merchantRef.update({ isOpen: !currentStatus });
+        document.getElementById('merchantStatus').innerHTML = `Estado: <span class="${!currentStatus ? 'text-green-500' : 'text-red-500'}">${!currentStatus ? 'Abierto' : 'Cerrado'}</span>`;
+        showAlert(`Estado cambiado a ${!currentStatus ? 'Abierto' : 'Cerrado'}`);
+    }
+});
+
+// Logout
+document.getElementById('merchantLogout').addEventListener('click', () => {
+    auth.signOut().then(() => {
+        window.location.href = 'index.html';
+    });
+});
+</script>
+{% endblock %}
