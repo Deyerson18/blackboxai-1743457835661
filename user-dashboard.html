@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Mi Cuenta</h1>
+    
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar -->
+        <div class="md:w-1/4">
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-16 h-16 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-2xl font-bold">
+                        <span id="userInitial">U</span>
+                    </div>
+                    <div>
+                        <h3 id="userName" class="font-bold">Usuario</h3>
+                        <p id="userEmail" class="text-sm text-gray-600">usuario@ejemplo.com</p>
+                    </div>
+                </div>
+                <nav class="space-y-2">
+                    <a href="#" class="block px-3 py-2 rounded-md bg-gray-100 text-[#FF6B35] font-medium">Mi Perfil</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-100">Mis Pedidos</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-100">Mis Direcciones</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-100">Mis Recompensas</a>
+                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-gray-100">Configuración</a>
+                    <button id="logoutBtn" class="w-full text-left block px-3 py-2 rounded-md hover:bg-gray-100 text-red-500">Cerrar Sesión</button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="md:w-3/4">
+            <!-- Profile Section -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4">Mi Perfil</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nombre completo</label>
+                        <p id="profileName" class="mt-1 text-gray-900">Cargando...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                        <p id="profileEmail" class="mt-1 text-gray-900">Cargando...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Teléfono</label>
+                        <p id="profilePhone" class="mt-1 text-gray-900">No especificado</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Miembro desde</label>
+                        <p id="memberSince" class="mt-1 text-gray-900">Cargando...</p>
+                    </div>
+                </div>
+                <button class="mt-4 bg-[#FF6B35] text-white py-2 px-4 rounded-md hover:bg-[#E55B2B]">
+                    Editar Perfil
+                </button>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4">Mis Pedidos Recientes</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedido #</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Restaurante</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable" class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">Cargando pedidos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load user data
+auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+        window.location.href = 'user-login.html';
+        return;
+    }
+
+    // Basic user info
+    document.getElementById('userInitial').textContent = user.email.charAt(0).toUpperCase();
+    document.getElementById('userName').textContent = user.displayName || 'Usuario';
+    document.getElementById('userEmail').textContent = user.email;
+    
+    // Profile section
+    document.getElementById('profileName').textContent = user.displayName || 'No especificado';
+    document.getElementById('profileEmail').textContent = user.email;
+    
+    // Member since date
+    const memberSince = new Date(user.metadata.creationTime);
+    document.getElementById('memberSince').textContent = memberSince.toLocaleDateString();
+
+    // Load additional user data from Firestore
+    const userDoc = await db.collection('users').doc(user.uid).get();
+    if (userDoc.exists) {
+        const userData = userDoc.data();
+        if (userData.phone) {
+            document.getElementById('profilePhone').textContent = userData.phone;
+        }
+    }
+
+    // TODO: Load user orders
+});
+
+// Logout button
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    auth.signOut().then(() => {
+        window.location.href = 'index.html';
+    });
+});
+</script>
+{% endblock %}
