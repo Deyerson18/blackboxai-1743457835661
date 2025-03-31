@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Seguimiento de Pedido</h1>
+    
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h2 class="text-xl font-bold">Pedido #<span id="orderNumber">12345</span></h2>
+                <p class="text-gray-600">Restaurante: <span id="restaurantName">La Parrilla del Chef</span></p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-500">Hora del pedido</p>
+                <p class="font-medium"><span id="orderTime">12:30 PM</span></p>
+            </div>
+        </div>
+        
+        <!-- Order Status Timeline -->
+        <div class="mb-8">
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-4 top-0 h-full w-0.5 bg-gray-200"></div>
+                
+                <!-- Status Steps -->
+                <div class="relative mb-8 pl-10">
+                    <div class="absolute left-0 w-8 h-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Pedido confirmado</h3>
+                    <p class="text-sm text-gray-600">El restaurante ha aceptado tu pedido</p>
+                    <p class="text-xs text-gray-500">12:32 PM</p>
+                </div>
+                
+                <div class="relative mb-8 pl-10">
+                    <div class="absolute left-0 w-8 h-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">En preparación</h3>
+                    <p class="text-sm text-gray-600">El restaurante está preparando tu pedido</p>
+                    <p class="text-xs text-gray-500">12:35 PM</p>
+                </div>
+                
+                <div class="relative mb-8 pl-10">
+                    <div class="absolute left-0 w-8 h-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">En camino</h3>
+                    <p class="text-sm text-gray-600">Carlos está entregando tu pedido</p>
+                    <p class="text-xs text-gray-500">12:50 PM</p>
+                </div>
+                
+                <div class="relative pl-10">
+                    <div class="absolute left-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Entregado</h3>
+                    <p class="text-sm text-gray-600">Tu pedido llegará pronto</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Delivery Info -->
+        <div class="flex flex-col md:flex-row gap-6 mb-8">
+            <!-- Delivery Person -->
+            <div class="flex-1 bg-gray-50 rounded-lg p-4">
+                <h3 class="font-bold mb-3">Tu repartidor</h3>
+                <div class="flex items-center space-x-4">
+                    <div class="w-16 h-16 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-xl font-bold">
+                        C
+                    </div>
+                    <div>
+                        <p class="font-medium">Carlos Martínez</p>
+                        <div class="flex items-center mt-1">
+                            <div class="text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-gray-600">4.7 (120)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex space-x-2">
+                    <button class="flex-1 bg-[#FF6B35] text-white py-2 px-4 rounded-md hover:bg-[#E55B2B] flex items-center justify-center space-x-2">
+                        <i class="fas fa-phone"></i>
+                        <span>Llamar</span>
+                    </button>
+                    <button class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-comment-alt"></i>
+                        <span>Mensaje</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Delivery Map -->
+            <div class="flex-1">
+                <h3 class="font-bold mb-3">Ubicación en tiempo real</h3>
+                <div id="trackingMap" class="h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <p class="text-gray-500">Mapa de seguimiento</p>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <p class="text-sm">
+                        <span class="font-medium">Tiempo estimado:</span> 
+                        <span id="deliveryTime">8-12 min</span>
+                    </p>
+                    <button class="text-sm text-[#FF6B35] hover:underline">
+                        Actualizar ubicación
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Details -->
+        <div>
+            <h3 class="font-bold mb-3">Detalles del pedido</h3>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-md overflow-hidden mr-3">
+                                        <img src="https://images.pexels.com/photos/1639565/pexels-photo-1639565.jpeg" 
+                                            alt="Hamburguesa" class="h-full w-full object-cover">
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">Hamburguesa Clásica</div>
+                                        <div class="text-sm text-gray-500">Extra queso</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">1</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">$8.99</td>
+                        </tr>
+                        <!-- More items... -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex justify-end">
+        <a href="user-dashboard.html" class="bg-gray-200 text-gray-800 py-2 px-6 rounded-md hover:bg-gray-300">
+            Volver a mis pedidos
+        </a>
+    </div>
+</div>
+
+<script>
+// Check authentication
+auth.onAuthStateChanged((user) => {
+    if (!user) {
+        window.location.href = 'user-login.html';
+        return;
+    }
+    
+    // TODO: Load order details from Firestore
+    // TODO: Set up real-time tracking updates
+});
+
+// TODO: Implement real-time order status updates
+// This would use Firestore listeners to update the UI when status changes
+</script>
+{% endblock %}
