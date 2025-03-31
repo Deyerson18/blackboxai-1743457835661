@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Mis Recompensas</h1>
+    
+    <!-- Points Summary -->
+    <div class="bg-gradient-to-r from-[#FF6B35] to-[#FF8E53] rounded-lg shadow-md p-6 text-white mb-8">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="mb-4 md:mb-0">
+                <h2 class="text-xl font-bold mb-1">Tus Puntos YaVoy</h2>
+                <p class="text-sm opacity-90">Gana puntos con cada pedido y canjéalos por recompensas</p>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl font-bold"><span id="userPoints">1,250</span></div>
+                <p class="text-sm opacity-90">puntos</p>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="mt-6">
+            <div class="flex justify-between text-sm mb-1">
+                <span>Nivel Plata</span>
+                <span><span id="currentPoints">1,250</span>/2,000 puntos</span>
+            </div>
+            <div class="w-full bg-white bg-opacity-30 rounded-full h-2.5">
+                <div class="bg-white h-2.5 rounded-full" style="width: 62.5%"></div>
+            </div>
+            <div class="flex justify-between text-xs mt-1">
+                <span>62.5% completado</span>
+                <span>Próximo nivel: Oro</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Available Rewards -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold">Recompensas Disponibles</h2>
+            <div class="text-sm text-gray-600">
+                <span id="availablePoints">1,250</span> puntos disponibles
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Reward Card 1 -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                <div class="h-32 bg-[#FF6B35] flex items-center justify-center text-white text-4xl">
+                    <i class="fas fa-coffee"></i>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-1">Café Gratis</h3>
+                    <p class="text-sm text-gray-600 mb-3">Canjea 300 puntos por un café en cualquier cafetería asociada</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-[#FF6B35]">300 puntos</span>
+                        <button class="bg-[#FF6B35] text-white py-1 px-3 rounded-full text-sm hover:bg-[#E55B2B]">
+                            Canjear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reward Card 2 -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                <div class="h-32 bg-[#FF6B35] flex items-center justify-center text-white text-4xl">
+                    <i class="fas fa-hamburger"></i>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-1">10% de Descuento</h3>
+                    <p class="text-sm text-gray-600 mb-3">10% de descuento en tu próximo pedido de comida rápida</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-[#FF6B35]">500 puntos</span>
+                        <button class="bg-[#FF6B35] text-white py-1 px-3 rounded-full text-sm hover:bg-[#E55B2B]">
+                            Canjear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reward Card 3 -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                <div class="h-32 bg-[#FF6B35] flex items-center justify-center text-white text-4xl">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-1">Envío Gratis</h3>
+                    <p class="text-sm text-gray-600 mb-3">Envío gratis en tu próximo pedido (hasta $5 de valor)</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-[#FF6B35]">800 puntos</span>
+                        <button class="bg-[#FF6B35] text-white py-1 px-3 rounded-full text-sm hover:bg-[#E55B2B]">
+                            Canjear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Rewards History -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold mb-6">Historial de Recompensas</h2>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recompensa</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Puntos</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">15/06/2023</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">10% de Descuento</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">-500</td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                Canjeado
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">02/06/2023</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">Café Gratis</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">-300</td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                Canjeado
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">20/05/2023</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">+500 Puntos</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-green-500">+500</td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                Obtenido
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <button class="text-[#FF6B35] hover:underline">Ver historial completo</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Check authentication
+auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+        window.location.href = 'user-login.html';
+        return;
+    }
+    
+    // TODO: Load user points and rewards from Firestore
+});
+
+// TODO: Implement reward redemption functionality
+</script>
+{% endblock %}
