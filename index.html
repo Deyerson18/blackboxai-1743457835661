@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Hero Section -->
+    <section class="bg-[#FF6B35] text-white rounded-xl p-8 md:p-12 mb-8">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-6 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Tu comida favorita en minutos</h1>
+                <p class="text-xl mb-6">Pide de los mejores restaurantes y recibe en tu puerta con YaVoy</p>
+                <div class="relative">
+                    <input type="text" placeholder="¿Qué quieres comer hoy?" 
+                        class="w-full py-3 px-4 rounded-full text-gray-800 focus:outline-none">
+                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FF6B35] text-white p-2 rounded-full">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg" 
+                    alt="Comida deliciosa" class="rounded-lg shadow-xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">Categorías</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow">
+                <div class="bg-[#FF6B35] text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                    <i class="fas fa-hamburger text-2xl"></i>
+                </div>
+                <h3 class="font-semibold">Comida Rápida</h3>
+            </div>
+            <!-- More categories... -->
+        </div>
+    </section>
+
+    <!-- Popular Restaurants -->
+    <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">Restaurantes Populares</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                <img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg" 
+                    alt="Restaurante" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-bold text-lg">La Parrilla del Chef</h3>
+                    <div class="flex items-center my-2">
+                        <div class="text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-gray-600 ml-2">4.5 (120)</span>
+                    </div>
+                    <button class="mt-2 bg-[#FF6B35] text-white py-2 px-4 rounded-full w-full">
+                        Ver Menú
+                    </button>
+                </div>
+            </div>
+            <!-- More restaurants... -->
+        </div>
+    </section>
+</div>
+{% endblock %}
