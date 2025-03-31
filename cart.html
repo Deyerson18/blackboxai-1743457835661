@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Mi Carrito</h1>
+    
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Items List -->
+        <div class="md:w-2/3">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-4">
+                <h2 class="text-xl font-bold mb-4">Tus Productos</h2>
+                
+                <div id="cartItems" class="space-y-4">
+                    <!-- Sample Item -->
+                    <div class="flex items-start border-b border-gray-200 pb-4">
+                        <div class="w-20 h-20 bg-gray-100 rounded-md overflow-hidden mr-4">
+                            <img src="https://images.pexels.com/photos/1639565/pexels-photo-1639565.jpeg" 
+                                alt="Hamburguesa" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-medium">Hamburguesa Clásica</h3>
+                                <button class="text-red-500 hover:text-red-700">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2">Restaurante: La Parrilla del Chef</p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center border border-gray-300 rounded-md">
+                                    <button class="px-2 py-1 text-gray-600 hover:bg-gray-100">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <span class="px-3">1</span>
+                                    <button class="px-2 py-1 text-gray-600 hover:bg-gray-100">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <span class="font-bold">$8.99</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div id="emptyCart" class="text-center py-12 hidden">
+                        <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">Tu carrito está vacío</p>
+                        <a href="index.html" class="mt-4 inline-block bg-[#FF6B35] text-white py-2 px-6 rounded-md hover:bg-[#E55B2B]">
+                            Explorar Restaurantes
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delivery Address -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4">Dirección de Entrega</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 border border-gray-300 rounded-md">
+                        <div>
+                            <p class="font-medium">Casa</p>
+                            <p class="text-sm text-gray-600">Av. Principal #123, Depto 4B</p>
+                        </div>
+                        <button class="text-[#FF6B35]">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <button class="w-full py-2 border-2 border-dashed border-gray-300 rounded-md text-gray-500 hover:border-[#FF6B35] hover:text-[#FF6B35]">
+                        <i class="fas fa-plus mr-2"></i>Agregar nueva dirección
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="md:w-1/3">
+            <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
+                <h2 class="text-xl font-bold mb-4">Resumen del Pedido</h2>
+                
+                <div class="space-y-3 mb-4">
+                    <div class="flex justify-between">
+                        <span>Subtotal</span>
+                        <span>$8.99</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Envío</span>
+                        <span>$2.50</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Impuestos</span>
+                        <span>$1.20</span>
+                    </div>
+                    <div class="border-t border-gray-200 pt-2 flex justify-between font-bold">
+                        <span>Total</span>
+                        <span>$12.69</span>
+                    </div>
+                </div>
+                
+                <!-- Coupon Code -->
+                <div class="mb-6">
+                    <label for="coupon" class="block text-sm font-medium text-gray-700 mb-1">Código de descuento</label>
+                    <div class="flex">
+                        <input type="text" id="coupon" placeholder="Ingresa código" 
+                            class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-[#FF6B35] focus:border-[#FF6B35]">
+                        <button class="bg-[#FF6B35] text-white px-4 py-2 rounded-r-md hover:bg-[#E55B2B]">
+                            Aplicar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Payment Options -->
+                <div class="mb-6">
+                    <h3 class="font-medium mb-2">Método de pago</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input id="credit-card" name="payment" type="radio" checked 
+                                class="h-4 w-4 text-[#FF6B35] focus:ring-[#FF6B35] border-gray-300">
+                            <label for="credit-card" class="ml-2 block text-sm text-gray-700">
+                                Tarjeta de crédito/débito
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="cash" name="payment" type="radio" 
+                                class="h-4 w-4 text-[#FF6B35] focus:ring-[#FF6B35] border-gray-300">
+                            <label for="cash" class="ml-2 block text-sm text-gray-700">
+                                Efectivo al entregar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="checkoutBtn" class="w-full bg-[#FF6B35] text-white py-3 px-4 rounded-md hover:bg-[#E55B2B] font-medium">
+                    Realizar Pedido
+                </button>
+                
+                <p class="mt-3 text-xs text-gray-500">
+                    Al realizar el pedido, aceptas nuestros <a href="#" class="text-[#FF6B35] hover:underline">Términos y Condiciones</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Check authentication
+auth.onAuthStateChanged((user) => {
+    if (!user) {
+        window.location.href = 'user-login.html';
+        return;
+    }
+    
+    // TODO: Load cart items from Firestore
+});
+
+// Checkout button
+document.getElementById('checkoutBtn').addEventListener('click', async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    try {
+        // TODO: Create order in Firestore
+        showAlert('Pedido realizado con éxito! Redirigiendo...');
+        setTimeout(() => {
+            window.location.href = 'order-tracking.html';
+        }, 2000);
+    } catch (error) {
+        showAlert('Error al realizar el pedido: ' + error.message, 'error');
+    }
+});
+
+// Update cart empty state
+function updateCartUI(itemsCount) {
+    const emptyCart = document.getElementById('emptyCart');
+    const cartItems = document.getElementById('cartItems');
+    
+    if (itemsCount === 0) {
+        emptyCart.classList.remove('hidden');
+        cartItems.classList.add('hidden');
+    } else {
+        emptyCart.classList.add('hidden');
+        cartItems.classList.remove('hidden');
+    }
+}
+</script>
+{% endblock %}
